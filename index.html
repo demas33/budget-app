@@ -212,9 +212,10 @@
             border: none;
             font-family: inherit;
             font-size: inherit;
-            width: 100%;
+            width: calc(100% - 15px);
             padding: 5px;
             border-radius: 4px;
+            margin-left: 2px;
         }
 
         .editable:focus {
@@ -224,6 +225,22 @@
 
         .editable.currency {
             font-family: 'Courier New', monospace;
+            font-weight: bold;
+            width: calc(100% - 20px);
+            display: inline-block;
+            vertical-align: middle;
+        }
+
+        .currency-container {
+            display: flex;
+            align-items: center;
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+        }
+
+        .currency-container .dollar-sign {
+            color: #2c3e50;
+            margin-right: 2px;
             font-weight: bold;
         }
 
@@ -623,8 +640,13 @@
             const row = document.createElement('tr');
             row.innerHTML = `
                 <td><input type="text" class="editable" value="${item.name}" onchange="updateIncome(${index}, 'name', this.value)"></td>
-                <td class="amount-cell">$<input type="number" class="editable currency" value="${item.monthly}" onchange="updateIncome(${index}, 'monthly', parseFloat(this.value) || 0)"></td>
-                <td class="amount-cell positive">$${(item.monthly * 12).toLocaleString()}</td>
+                <td class="amount-cell">
+                    <div class="currency-container">
+                        <span class="dollar-sign">$</span>
+                        <input type="number" class="editable currency" value="${item.monthly}" onchange="updateIncome(${index}, 'monthly', parseFloat(this.value) || 0)">
+                    </div>
+                </td>
+                <td class="amount-cell positive">${(item.monthly * 12).toLocaleString()}</td>
                 <td><input type="text" class="editable" value="${item.notes || ''}" onchange="updateIncome(${index}, 'notes', this.value)"></td>
                 <td><button class="delete-btn" onclick="deleteIncome(${index})">Delete</button></td>
             `;
@@ -690,8 +712,13 @@
             const row = document.createElement('tr');
             row.innerHTML = `
                 <td><input type="text" class="editable" value="${item.name}" onchange="updateExpense('${type}', ${index}, 'name', this.value)"></td>
-                <td class="amount-cell">$<input type="number" class="editable currency" value="${item.monthly}" onchange="updateExpense('${type}', ${index}, 'monthly', parseFloat(this.value) || 0)"></td>
-                <td class="amount-cell negative">$${annualAmount.toLocaleString()}</td>
+                <td class="amount-cell">
+                    <div class="currency-container">
+                        <span class="dollar-sign">$</span>
+                        <input type="number" class="editable currency" value="${item.monthly}" onchange="updateExpense('${type}', ${index}, 'monthly', parseFloat(this.value) || 0)">
+                    </div>
+                </td>
+                <td class="amount-cell negative">${annualAmount.toLocaleString()}</td>
                 <td>${percentage}%</td>
                 <td><button class="delete-btn" onclick="deleteExpense('${type}', ${index})">Delete</button></td>
             `;
@@ -750,9 +777,19 @@
             const row = document.createElement('tr');
             row.innerHTML = `
                 <td><input type="text" class="editable" value="${item.name}" onchange="updateSavings(${index}, 'name', this.value)"></td>
-                <td class="amount-cell">$<input type="number" class="editable currency" value="${item.monthly}" onchange="updateSavings(${index}, 'monthly', parseFloat(this.value) || 0)"></td>
-                <td class="amount-cell positive">$${(item.monthly * 12).toLocaleString()}</td>
-                <td class="amount-cell">$<input type="number" class="editable currency" value="${item.current || 0}" onchange="updateSavings(${index}, 'current', parseFloat(this.value) || 0)"></td>
+                <td class="amount-cell">
+                    <div class="currency-container">
+                        <span class="dollar-sign">$</span>
+                        <input type="number" class="editable currency" value="${item.monthly}" onchange="updateSavings(${index}, 'monthly', parseFloat(this.value) || 0)">
+                    </div>
+                </td>
+                <td class="amount-cell positive">${(item.monthly * 12).toLocaleString()}</td>
+                <td class="amount-cell">
+                    <div class="currency-container">
+                        <span class="dollar-sign">$</span>
+                        <input type="number" class="editable currency" value="${item.current || 0}" onchange="updateSavings(${index}, 'current', parseFloat(this.value) || 0)">
+                    </div>
+                </td>
                 <td><button class="delete-btn" onclick="deleteSavings(${index})">Delete</button></td>
             `;
             return row;
